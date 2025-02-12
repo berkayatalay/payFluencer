@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Application.Services.AuthenticatorService;
 using Application.Services.AuthService;
 using Application.Services.UsersService;
@@ -20,6 +20,19 @@ using NArchitecture.Core.Mailing;
 using NArchitecture.Core.Mailing.MailKit;
 using NArchitecture.Core.Security.DependencyInjection;
 using NArchitecture.Core.Security.JWT;
+using Application.Services.Disputes;
+using Application.Services.Gigs;
+using Application.Services.Influencers;
+using Application.Services.InfluencerReviews;
+using Application.Services.InfluencerSocials;
+using Application.Services.Messages;
+using Application.Services.Posts;
+using Application.Services.PostGigs;
+using Application.Services.Reviews;
+using Application.Services.SocialPlatforms;
+using Application.Services.Sponsors;
+using Application.Services.SponsorReviews;
+using Application.Services.SupportTickets;
 
 namespace Application;
 
@@ -61,6 +74,21 @@ public static class ApplicationServiceRegistration
 
         services.AddSecurityServices<Guid, int, Guid>(tokenOptions);
 
+        services.AddScoped<IDisputeService, DisputeManager>();
+        services.AddScoped<IGigService, GigManager>();
+        services.AddScoped<IInfluencerService, InfluencerManager>();
+        services.AddScoped<IInfluencerReviewService, InfluencerReviewManager>();
+        services.AddScoped<IInfluencerReviewService, InfluencerReviewManager>();
+        services.AddScoped<IInfluencerSocialService, InfluencerSocialManager>();
+        services.AddScoped<IMessageService, MessageManager>();
+        services.AddScoped<IPostService, PostManager>();
+        services.AddScoped<IPostGigService, PostGigManager>();
+        services.AddScoped<IReviewService, ReviewManager>();
+        services.AddScoped<ISocialPlatformService, SocialPlatformManager>();
+        services.AddScoped<ISponsorService, SponsorManager>();
+        services.AddScoped<ISponsorReviewService, SponsorReviewManager>();
+        services.AddScoped<ISupportTicketService, SupportTicketManager>();
+        services.AddScoped<ISupportTicketService, SupportTicketManager>();
         return services;
     }
 

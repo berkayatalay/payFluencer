@@ -10,6 +10,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NArchitecture.Core.Application.Dtos;
+using Domain.Dtos;
 
 namespace WebAPI.Controllers;
 
@@ -28,9 +29,9 @@ public class AuthController : BaseController
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
-        LoginCommand loginCommand = new() { UserForLoginDto = userForLoginDto, IpAddress = getIpAddress() };
+        LoginCommand loginCommand = new() { UserLoginDto = userLoginDto, IpAddress = getIpAddress() };
         LoggedResponse result = await Mediator.Send(loginCommand);
 
         if (result.RefreshToken is not null)

@@ -280,6 +280,7 @@ dotnet_naming_style.local.required_suffix =
 dotnet_naming_style.local.word_separator = 
 dotnet_naming_style.local.capitalization = camel_case
 csharp_style_prefer_primary_constructors = true:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
 
 [*.{cs,vb}]
 dotnet_style_coalesce_expression = true:suggestion

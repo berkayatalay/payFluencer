@@ -7,23 +7,24 @@ using MediatR;
 using NArchitecture.Core.Application.Dtos;
 using NArchitecture.Core.Security.Enums;
 using NArchitecture.Core.Security.JWT;
+using Domain.Dtos;
 
 namespace Application.Features.Auth.Commands.Login;
 
 public class LoginCommand : IRequest<LoggedResponse>
 {
-    public UserForLoginDto UserForLoginDto { get; set; }
+    public UserLoginDto UserLoginDto { get; set; }
     public string IpAddress { get; set; }
 
     public LoginCommand()
     {
-        UserForLoginDto = null!;
+        UserLoginDto = null!;
         IpAddress = string.Empty;
     }
 
-    public LoginCommand(UserForLoginDto userForLoginDto, string ipAddress)
+    public LoginCommand(UserLoginDto userLoginDto, string ipAddress)
     {
-        UserForLoginDto = userForLoginDto;
+        UserLoginDto = userLoginDto;
         IpAddress = ipAddress;
     }
 
@@ -50,24 +51,25 @@ public class LoginCommand : IRequest<LoggedResponse>
         public async Task<LoggedResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             User? user = await _userService.GetAsync(
-                predicate: u => u.Email == request.UserForLoginDto.Email,
+                predicate: u => u.Email == request.UserLoginDto.Email,
+                //predicate: u => u.Password == request.UserLoginDto.Password,
                 cancellationToken: cancellationToken
             );
             await _authBusinessRules.UserShouldBeExistsWhenSelected(user);
-            await _authBusinessRules.UserPasswordShouldBeMatch(user!, request.UserForLoginDto.Password);
+            await _authBusinessRules.UserPasswordShouldBeMatch(user!, request.UserLoginDto.Password);
 
             LoggedResponse loggedResponse = new();
 
             if (user!.AuthenticatorType is not AuthenticatorType.None)
             {
-                if (request.UserForLoginDto.AuthenticatorCode is null)
+                if (request.UserLoginDto.AuthenticatorCode is null)
                 {
                     await _authenticatorService.SendAuthenticatorCode(user);
                     loggedResponse.RequiredAuthenticatorType = user.AuthenticatorType;
                     return loggedResponse;
                 }
 
-                await _authenticatorService.VerifyAuthenticatorCode(user, request.UserForLoginDto.AuthenticatorCode);
+                await _authenticatorService.VerifyAuthenticatorCode(user, request.UserLoginDto.AuthenticatorCode);
             }
 
             AccessToken createdAccessToken = await _authService.CreateAccessToken(user);

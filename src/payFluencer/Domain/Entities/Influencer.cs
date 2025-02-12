@@ -6,7 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Entities;
-public class Influencer : IEntity<Guid>
+public class Influencer : Entity<Guid>
 {
-    public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string UserName { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string ProfilePicture { get; set; }
+    public string About { get; set; }
+    public double Rating { get; set; }
+    public Guid UserId { get; set; }
+
+
+    public virtual User User { get; set; }
+    public virtual ICollection<Gig> Gigs { get; set; }
+    public virtual ICollection<InfluencerSocial> InfluencerSocials { get; set; }
+    public virtual ICollection<InfluencerReview> InfluencerReviews { get; set; }
 }

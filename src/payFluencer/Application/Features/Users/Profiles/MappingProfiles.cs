@@ -6,8 +6,10 @@ using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
 using AutoMapper;
 using Domain.Entities;
+using NArchitecture.Core.Application.Dtos;
 using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Paging;
+using Domain.Dtos;
 
 namespace Application.Features.Users.Profiles;
 
@@ -25,6 +27,7 @@ public class MappingProfiles : Profile
         CreateMap<User, DeletedUserResponse>().ReverseMap();
         CreateMap<User, GetByIdUserResponse>().ReverseMap();
         CreateMap<User, GetListUserListItemDto>().ReverseMap();
+        CreateMap<User, UserLoginDto>().ReverseMap();
         CreateMap<IPaginate<User>, GetListResponse<GetListUserListItemDto>>().ReverseMap();
     }
 }
